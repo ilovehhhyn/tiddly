@@ -1,0 +1,131 @@
+@font-face { font-family: 'Gaegu'; src: url('../fonts/Gaegu-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Gaegu'; src: url('../fonts/Gaegu-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+:root { font-family: 'Gaegu', ui-rounded, sans-serif; color: #332b29; font-size: 18px; }
+* { box-sizing: border-box; }
+body { margin: 0; overflow: hidden; background: transparent; }
+#app { width: 100vw; height: 100vh; position: relative; }
+button, select, .panel, .panel * { -webkit-app-region: no-drag; }
+.panel { position: absolute; left: 10px; top: 8px; width: 400px; height: 488px; opacity: 0; transform: translateY(8px) rotate(-.25deg) scale(.98); pointer-events: none; transition: 160ms ease; }
+.panel.open { opacity: 1; transform: none; pointer-events: auto; }
+.panel::before { content: ''; position: absolute; inset: 0; background: #fffdf8; border: 1px solid #e2d9cb; border-radius: 22px 22px 26px 20px; box-shadow: 0 4px 0 #eee6da, 0 9px 16px #332b2914; }
+.panel-content { position: relative; z-index: 2; width: 100%; height: 100%; padding: 17px 34px 14px; }
+header, .settings, .actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+header { height: 66px; padding: 0 0 8px; align-items: center; border-bottom: 1px solid #e9e1d6; }
+header strong { font-size: 32px; letter-spacing: -.03em; transform: rotate(-2deg); color: #6f3c48; }
+button, select { border: 0; padding: 3px 6px; background: transparent; color: inherit; font: inherit; }
+button:hover { transform: translateY(-1px) rotate(.3deg); }
+button:focus-visible, select:focus-visible { outline: 3px solid #6d91a3; outline-offset: 2px; }
+button:disabled { opacity: .45; }
+.stats, .next, .status { font-size: 12px; color: #675d56; }
+.stats { max-width: 180px; text-align: right; line-height: 1.4; font-size: 13px; }
+.chart { height: 201px; margin: 18px 0 0; padding: 12px 16px 0; background: #f8e9e9; border-radius: 16px 20px 15px 19px; }
+.peak-meter { margin: 0 0 1px; }
+.peak-label { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 700; }
+.peak-label output { color: #7b3341; font-size: 17px; }
+.peak-track { height: 5px; margin-top: 5px; background: #ead4d8; border-radius: 8px; overflow: hidden; }
+.peak-track i { display: block; width: 0; height: 6px; border-radius: 40% 60% 45% 55%; background: #8d3448; transition: width 420ms cubic-bezier(.2,.9,.3,1.25); }
+.peak-advanced .peak-track { animation: peak-nudge 700ms ease; }
+.peak-advanced .peak-label output { animation: peak-pop 700ms ease; }
+.peak-retreated .peak-track { animation: peak-retreat 700ms ease; }
+.peak-retreated .peak-label output { animation: peak-cool 700ms ease; }
+.graph { width: 100%; height: 142px; overflow: visible; }
+.curve { fill: none; stroke: #7b3341; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 5 1 11 1; }
+.reference { stroke: #cabdac; stroke-dasharray: 3 4; }
+.marker { fill: #7b3341; stroke: white; stroke-width: 2; }
+.peak-advanced .marker { animation: marker-pop 700ms ease; transform-box: fill-box; transform-origin: center; }
+.peak-retreated .marker { animation: marker-cool 700ms ease; transform-box: fill-box; transform-origin: center; }
+.graph text { font-size: 10px; fill: #7c7168; }
+.next { margin: 12px 0 0; text-align: center; font-size: 13px; }
+.actions { height: 90px; justify-content: center; gap: 38px; margin-top: 5px; }
+.drink-button { position: relative; width: 80px; height: 76px; padding: 0; cursor: pointer; transform: none; display: grid; place-items: center; }
+.drink-button:hover { transform: translateY(-2px) rotate(.5deg); }
+.drink-button::after { content: attr(data-label); position: absolute; left: 50%; top: -7px; width: max-content; padding: 1px 7px 2px; border-radius: 50%; background: rgba(255,250,242,.94); color: #332b29; font-size: 14px; opacity: 0; transform: translate(-50%,4px) rotate(-1deg); transition: 120ms ease; pointer-events: none; }
+.drink-button:hover::after, .drink-button:focus-visible::after { opacity: 1; transform: translate(-50%,0) rotate(-1deg); }
+.wine-art, .water-art { position: relative; display: block; margin: auto; overflow: hidden; pointer-events: none; transform: scale(.58); transform-origin: center; }
+.wine-art { width: 80px; height: 100px; }
+.water-art { width: 100px; height: 96px; }
+.wine-art img { position: absolute; left: -667px; top: -542px; width: 1176px; height: 1176px; max-width: none; }
+.water-art img { position: absolute; left: -907px; top: -633px; width: 1331px; height: 1331px; max-width: none; }
+.settings { margin-top: 0; padding: 9px 0 0; border-top: 1px solid #e9e1d6; font-size: 14px; }
+.settings label { display: flex; align-items: center; gap: 4px; }
+select { appearance: none; border: 0; border-radius: 0; padding: 1px 13px 1px 2px; background: linear-gradient(45deg, transparent 50%, #514640 50%) right 4px center / 5px 5px no-repeat; }
+.pause, .cancel { border: 0; border-radius: 0; cursor: pointer; font-size: 12px; }
+.status { position: absolute; left: 44px; right: 44px; bottom: 31px; margin: 0; overflow: hidden; text-align: center; white-space: nowrap; text-overflow: ellipsis; }
+.cancel { position: absolute; left: 42px; bottom: 13px; }
+.close { position: absolute; right: 9px; top: 9px; bottom: auto; font-size: 19px; line-height: 1; cursor: pointer; color: #97897f; }
+.hidden { display: none; }
+.pet { position: absolute; right: 12px; bottom: 3px; width: 152px; height: 152px; border: 0; border-radius: 0; padding: 0; background: transparent; box-shadow: none; transform: none; overflow: hidden; cursor: grab; touch-action: none; user-select: none; }
+.pet:hover, .pet:active { border: 0; box-shadow: none; transform: none; }
+.pet:active { cursor: grabbing; }
+.sprite { display: block; width: 152px; height: 152px; background-size: 630px 630px; background-repeat: no-repeat; transform-origin: 50% 90%; }
+/* The source sheets are Helen's untouched PNGs. Framing selects a drawn pose; it never redraws the pet. */
+[data-character="hedgehog"] .sprite { background-image: url('../source/hedgehog-v2-original.png'); background-position: -83px -278px; }
+[data-character="hedgehog"][data-pose="wine-1"] .sprite { background-position: -141px -136px; animation: pour 1.8s ease; }
+[data-character="hedgehog"][data-pose="water-1"] .sprite { background-position: -333px -142px; animation: sip 1.8s ease; }
+[data-character="hedgehog"][data-pose="water-2"] .sprite { background-position: -309px -286px; animation: sip 1.8s ease; }
+[data-character="owl"] .sprite { background-image: url('../source/owl-v2-original.png'); background-position: -187px -181px; }
+[data-character="owl"][data-pose="sleepy"] .sprite { background-position: -307px -16px; }
+[data-character="owl"][data-pose="water-1"] .sprite { background-position: -432px -189px; animation: sip 1.8s ease; }
+[data-character="owl"][data-pose="wine-1"] .sprite { background-position: -48px -63px; animation: pour 1.8s ease; }
+[data-character="owl"][data-pose="wine-2"] .sprite { background-position: -40px -398px; animation: pour 1.8s ease; }
+[data-character="owl"][data-pose="wine-3"] .sprite { background-position: -382px -385px; animation: pour 1.8s ease; }
+.bubble { position: absolute; right: 126px; bottom: 125px; max-width: 215px; padding: 9px 12px; border-radius: 14px 14px 2px 14px; background: #fffaf2; box-shadow: 0 7px 20px rgba(0,0,0,.15); opacity: 0; transform: translateY(5px); transition: 160ms; pointer-events: none; font-size: 13px; }
+.bubble:empty { display: none; }
+.bubble.show { opacity: 1; transform: none; }
+.drink-scene { position: absolute; left: 80px; bottom: 105px; width: 260px; height: 240px; pointer-events: none; opacity: 0; z-index: 4; filter: drop-shadow(0 4px 3px rgba(51,43,41,.12)); }
+.drink-step { position: absolute; left: 50%; bottom: 0; display: block; opacity: 0; background-image: url('../source/drink-frames-original.png'); background-repeat: no-repeat; transform: translateX(-50%); }
+.animating-wine .drink-scene, .animating-water .drink-scene { opacity: 1; }
+.animating-wine .actions, .animating-water .actions { opacity: 0; }
+.animating-wine .step-1 { width: 69px; height: 113px; background-size: 1126px; background-position: -133px -499px; }
+.animating-wine .step-2 { width: 94px; height: 222px; background-size: 922px; background-position: -311px -288px; }
+.animating-wine .step-3 { width: 122px; height: 223px; background-size: 901px; background-position: -418px -272px; }
+.animating-wine .step-4 { width: 181px; height: 228px; background-size: 860px; background-position: -612px -248px; }
+.animating-water .step-1 { width: 53px; height: 63px; background-size: 1434px; background-position: -190px -1180px; }
+.animating-water .step-2 { width: 198px; height: 215px; background-size: 1147px; background-position: -310px -804px; }
+.animating-water .step-3 { width: 216px; height: 203px; background-size: 1024px; background-position: -520px -716px; }
+.animating-water .step-4 { width: 103px; height: 66px; background-size: 1434px; background-position: -1029px -1220px; }
+[data-drink-frame="1"] .step-1, [data-drink-frame="2"] .step-2, [data-drink-frame="3"] .step-3, [data-drink-frame="4"] .step-4 { opacity: 1; }
+@keyframes sip { 25%,70% { transform: rotate(4deg) translateY(-3px); } }
+@keyframes pour { 25% { transform: rotate(-5deg) translateY(-3px); } 60% { transform: rotate(4deg); } }
+@keyframes peak-nudge { 35% { transform: rotate(1deg) scale(1.025); } }
+@keyframes peak-pop { 40% { transform: scale(1.35) rotate(-4deg); color: #b12f4c; } }
+@keyframes marker-pop { 40% { transform: scale(2.2); fill: #d04661; } }
+@keyframes peak-retreat { 35% { transform: translateX(-5px) rotate(-1deg); } }
+@keyframes peak-cool { 40% { transform: scale(1.25) rotate(3deg); color: #37697d; } }
+@keyframes marker-cool { 40% { transform: scale(1.8); fill: #5b9fba; } }
+/* Compact card: preserve readable type and real, aligned icon bounds. */
+.panel { width: 200px; height: 244px; }
+.panel::before { border-radius: 13px; box-shadow: 0 3px 0 #eee6da, 0 6px 10px #332b2914; }
+.panel-content { padding: 8px 12px; }
+header { height: 34px; padding: 0; border: 0; }
+header strong { font-size: 22px; }
+.stats { width: 100%; max-width: none; table-layout: fixed; border-collapse: collapse; font-size: 10px; line-height: 1.1; text-align: center; }
+.stats td { padding: 2px 0; border-right: 1px solid #e9e1d6; }
+.stats td:last-child { border: 0; }
+.stats output { display: block; font-size: 13px; color: #6f3c48; }
+.stats span { display: block; margin-top: 2px; }
+.signature { position: absolute; bottom: 3px; right: 11px; color: #a0948b; font-size: 9px; transform: rotate(-3deg); }
+.chart { height: 99px; margin-top: 7px; padding: 5px 8px 0; border-radius: 10px; }
+.peak-label { font-size: 11px; }
+.peak-label output { font-size: 12px; }
+.peak-track { height: 3px; margin-top: 1px; }
+.peak-track i { height: 3px; }
+.graph { height: 69px; }
+.next { font-size: 10px; margin: 4px 0 0; }
+.actions { height: 43px; margin: 0; gap: 24px; }
+.drink-button { width: 48px; height: 42px; }
+.wine-art, .water-art { transform: none; margin: 0; }
+.wine-art { width: 13px; height: 36px; }
+.wine-art img { width: 403px; height: 403px; left: -235.54px; top: -185.98px; }
+.water-art { width: 32px; height: 33px; }
+.water-art img { width: 479px; height: 479px; left: -328.61px; top: -227.81px; }
+.drink-button::after { font-size: 11px; top: -10px; }
+.settings { padding-top: 3px; font-size: 11px; border: 0; }
+.pause { font-size: 11px; }
+.close { top: -3px; right: 0; font-size: 13px; }
+.status { left: 10px; right: 10px; bottom: 3px; font-size: 9px; }
+.cancel { left: 10px; bottom: -22px; background: #fffdf8; border-radius: 6px; }
+.drink-scene { left: -20px; bottom: 112px; transform: scale(.36); transform-origin: center bottom; }
+#app:not(:has(.panel.open)) .drink-scene { left: calc(50% - 130px); bottom: 58px; transform: scale(.3); }
+.bubble { right: 8px; bottom: 148px; max-width: 195px; font-size: 11px; padding: 6px 8px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: 0.01ms !important; } }

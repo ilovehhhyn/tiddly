@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ballmer"
+  short_description: "Simple, verified coding and measured performance"
+  default_prompt: "Use $ballmer to research, plan, implement, and review this coding task with simple code and concise progress updates."

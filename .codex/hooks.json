@@ -1,0 +1,14 @@
+{
+  "description": "Tiddly: connect the Ballmer skill command to the local desktop pet.",
+  "hooks": {
+    "UserPromptSubmit": [{
+      "hooks": [{
+        "type": "command",
+        "command": "/usr/local/bin/node /Users/helenhui/tiddly/hooks/ballmer-hook.mjs codex",
+        "timeout": 1,
+        "additionalContextLimit": 200,
+        "statusMessage": "Telling Tiddly"
+      }]
+    }]
+  }
+}

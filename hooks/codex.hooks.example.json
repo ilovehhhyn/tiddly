@@ -1,0 +1,13 @@
+{
+  "description": "Ballmer-owned hook example. Install through the app after reviewing paths.",
+  "hooks": {
+    "UserPromptSubmit": [{
+      "hooks": [{
+        "type": "command",
+        "command": "node /ABSOLUTE/PATH/TO/hooks/ballmer-hook.mjs codex",
+        "timeout": 1,
+        "additionalContextLimit": 200
+      }]
+    }]
+  }
+}

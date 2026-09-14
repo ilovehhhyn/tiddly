@@ -1,0 +1,26 @@
+{
+  "name": "ballmer-desktop-pet",
+  "productName": "Tiddly",
+  "version": "0.1.0",
+  "description": "Tiddly, a hand-drawn desktop companion with a playful Ballmer peak.",
+  "main": "dist/main/app.js",
+  "scripts": {
+    "build:native": "mkdir -p dist/native && swiftc native/macos/tiddly-frontmost.swift -o dist/native/tiddly-frontmost",
+    "build": "npm run build:native && tsc && vite build",
+    "start": "npm run build && electron-forge start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.mjs",
+    "test:desktop": "npm run build && node scripts/desktop-smoke.mjs",
+    "make:forge": "npm run build && electron-forge make",
+    "make": "npm run build && sh scripts/package-macos.sh"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "7.11.2",
+    "@electron-forge/maker-zip": "7.11.2",
+    "@types/node": "24.10.13",
+    "electron": "44.3.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.0",
+    "vitest": "5.0.0"
+  }
+}
