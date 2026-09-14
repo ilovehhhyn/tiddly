@@ -1,6 +1,7 @@
-# Tiddly desktop pet
+# Tiddly - get tiddly to code!
 
-Tiddly is a local desktop pet for macOS, built with hand-drawn owl, hedgehog, and drink artwork used verbatim.
+Tiddly is a local desktop pet for macOS that helps you get in the flow  🍾 🥂 🍷 ✨ 
+<img width="195" height="164" alt="Screenshot 2026-09-14 at 1 26 07 AM" src="https://github.com/user-attachments/assets/01e47d55-6c40-4760-8436-ca85ba8b9397" />
 
 ## Install and start
 
