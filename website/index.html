@@ -14,7 +14,7 @@
     <a class="wordmark" href="#top" aria-label="Tiddly home"><span>tiddly!</span><i aria-hidden="true"></i></a>
     <nav aria-label="Main navigation">
       <a href="#how">How it works</a>
-      <a href="#play">Meet your pet</a>
+      <a href="#play">Meet the ritual</a>
       <a class="nav-button" href="https://github.com/ilovehhhyn/tiddly">GitHub <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -23,12 +23,12 @@
     <section class="hero" id="top">
       <div class="burst burst-one" aria-hidden="true">tiny pal!</div>
       <div class="hero-copy">
-        <p class="eyebrow">A desktop companion for developers</p>
-        <h1>Your little friend<br>for getting <em>in the flow.</em></h1>
-        <p class="lede">Tiddly keeps you company while you code, tracks your momentum on the Ballmer curve, and gives you a gentle nudge to drink water and pace yourself.</p>
+        <p class="eyebrow">A desktop companion for <s>alcoholic</s> developers</p>
+        <h1>hai!<br><em>tiddly here.</em></h1>
+        <p class="lede">you can live vicariously through me as i drink while you code and help you reach flow state. happy coding!</p>
         <div class="hero-actions">
           <a class="comic-button primary" href="#install">Get Tiddly <span aria-hidden="true">→</span></a>
-          <a class="comic-button secondary" href="#play">Meet the pets</a>
+          <a class="comic-button secondary" href="#play">Meet the ritual</a>
         </div>
         <p class="platform"><span aria-hidden="true">●</span> Made for Apple-silicon macOS</p>
       </div>
@@ -36,9 +36,9 @@
       <div class="hero-comic" aria-label="Hedgehog and owl coding companions">
         <div class="speed-lines" aria-hidden="true"></div>
         <div class="speech speech-owl">ready to<br><strong>lock in?</strong></div>
-        <div class="speech speech-hedgehog">but first...<br><strong>water!</strong></div>
-        <div class="sprite sprite-owl owl-idle" role="img" aria-label="Hand-drawn owl"></div>
-        <div class="sprite sprite-hedgehog hedgehog-water" role="img" aria-label="Hand-drawn hedgehog holding water"></div>
+        <div class="speech speech-hedgehog"><strong>but first...</strong></div>
+        <div class="sprite sprite-owl owl-wine-bottle" role="img" aria-label="Hand-drawn owl holding a bottle with both wings"></div>
+        <div class="sprite sprite-hedgehog hedgehog-bottle-feet" role="img" aria-label="Hand-drawn hedgehog with a bottle at its feet"></div>
         <span class="sfx sfx-pop" aria-hidden="true">POP!</span>
         <span class="star star-one" aria-hidden="true">✦</span>
         <span class="star star-two" aria-hidden="true">✦</span>
@@ -64,26 +64,36 @@
             <div class="sprite hedgehog-rest"></div>
           </div>
           <h3>Pick your little friend.</h3>
-          <p>Owl or hedgehog? They live on your desktop, stay out of the way, and show up when you need them.</p>
         </article>
 
         <article class="comic-panel panel-flow">
           <span class="panel-number">02</span>
           <div class="panel-caption">Find the sweet spot</div>
-          <div class="mini-curve" aria-label="A playful rising Ballmer curve">
-            <span class="curve-label">flow!</span><i></i><b></b>
+          <div class="mini-curve" aria-label="A complete Ballmer curve rising to a flow-state peak and returning down">
+            <svg viewBox="0 0 460 230" aria-hidden="true">
+              <defs>
+                <linearGradient id="curve-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#f4b9c1" stop-opacity=".85"/>
+                  <stop offset="1" stop-color="#f4b9c1" stop-opacity=".08"/>
+                </linearGradient>
+              </defs>
+              <path class="curve-area" d="M36 190 C105 188 128 178 158 143 C187 108 193 49 232 39 C270 30 290 71 307 112 C327 160 361 187 426 190 L426 190 L36 190 Z"/>
+              <path class="curve-line" d="M36 190 C105 188 128 178 158 143 C187 108 193 49 232 39 C270 30 290 71 307 112 C327 160 361 187 426 190"/>
+              <line class="curve-axis" x1="35" y1="18" x2="35" y2="193"/>
+              <line class="curve-axis" x1="35" y1="192" x2="435" y2="192"/>
+              <line class="peak-guide" x1="242" y1="42" x2="242" y2="192"/>
+              <circle class="curve-dot" cx="242" cy="38" r="10"/>
+              <text class="flow-label" x="270" y="38">flow state!</text>
+              <text class="peak-number" x="216" y="216">0.1337</text>
+            </svg>
           </div>
           <h3>Watch your flow grow.</h3>
           <p>Tiddly turns focused coding time into a playful progress curve. A little momentum feels good. Keep going.</p>
         </article>
 
         <article class="comic-panel panel-pace">
-          <span class="panel-number">03</span>
-          <div class="panel-caption">Remember you're human</div>
           <div class="sprite owl-water" aria-hidden="true"></div>
-          <div class="speech tiny-speech">sip<br>sip!</div>
-          <h3>Pause. Hydrate. Reset.</h3>
-          <p>Water steps the curve back. Tiddly keeps the joke gentle and reminds you that pacing yourself is part of good work.</p>
+          <h3>pause;<br>hydrate!</h3>
         </article>
       </div>
     </section>
