@@ -11,7 +11,13 @@ Tiddly currently targets Apple-silicon macOS. Prereqs: [Node.js](https://nodejs.
 git clone https://github.com/ilovehhhyn/tiddly.git
 cd tiddly
 npm install
-npm start```
+npm start
+```
+
+if you closed tiddly, relaunch it by navigating to the `tiddly` repo and running 
+```sh
+npm start
+```
 
 ## Connect Codex or Claude Code
 
