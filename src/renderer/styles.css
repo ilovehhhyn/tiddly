@@ -80,10 +80,10 @@ select { appearance: none; border: 0; border-radius: 0; padding: 1px 13px 1px 2p
 .animating-wine .step-2 { width: 94px; height: 222px; background-size: 922px; background-position: -311px -288px; }
 .animating-wine .step-3 { width: 122px; height: 223px; background-size: 901px; background-position: -418px -272px; }
 .animating-wine .step-4 { width: 181px; height: 228px; background-size: 860px; background-position: -612px -248px; }
-.animating-water .step-1 { width: 53px; height: 63px; background-size: 1434px; background-position: -190px -1180px; }
+.animating-water .step-1 { width: 80px; height: 63px; background-size: 1434px; background-position: -180px -1180px; }
 .animating-water .step-2 { width: 198px; height: 215px; background-size: 1147px; background-position: -310px -804px; }
 .animating-water .step-3 { width: 216px; height: 203px; background-size: 1024px; background-position: -520px -716px; }
-.animating-water .step-4 { width: 103px; height: 66px; background-size: 1434px; background-position: -1029px -1220px; }
+.animating-water .step-4 { width: 220px; height: 66px; background-size: 1434px; background-position: -980px -1220px; }
 [data-drink-frame="1"] .step-1, [data-drink-frame="2"] .step-2, [data-drink-frame="3"] .step-3, [data-drink-frame="4"] .step-4 { opacity: 1; }
 @keyframes sip { 25%,70% { transform: rotate(4deg) translateY(-3px); } }
 @keyframes pour { 25% { transform: rotate(-5deg) translateY(-3px); } 60% { transform: rotate(4deg); } }
@@ -125,7 +125,7 @@ header strong { font-size: 22px; }
 .close { top: -3px; right: 0; font-size: 13px; }
 .status { left: 10px; right: 10px; bottom: 3px; font-size: 9px; }
 .cancel { left: 10px; bottom: -22px; background: #fffdf8; border-radius: 6px; }
-.drink-scene { left: -20px; bottom: 112px; transform: scale(.36); transform-origin: center bottom; }
-#app:not(:has(.panel.open)) .drink-scene { left: calc(50% - 130px); bottom: 58px; transform: scale(.3); }
+.drink-scene { left: auto; right: 0; bottom: 112px; transform: scale(.36); transform-origin: center bottom; }
+#app:not(:has(.panel.open)) .drink-scene { left: auto; right: 0; bottom: 58px; transform: scale(.3); }
 .bubble { right: 8px; bottom: 148px; max-width: 195px; font-size: 11px; padding: 6px 8px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition-duration: 0.01ms !important; } }
