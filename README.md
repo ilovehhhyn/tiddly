@@ -1,8 +1,7 @@
 # Tiddly desktop pet
 
-Tiddly is a local Electron desktop pet for macOS. It uses Helen’s supplied owl, hedgehog, and drink artwork verbatim. The artwork is not redrawn or replaced.
+Tiddly is a local desktop pet for macOS. 
 
-For the architecture and development workflow, see [internal documentation](docs/INTERNALS.md). Verified and pending platform behavior is tracked in [Tiddly capabilities](docs/CAPABILITIES.md).
 
 ## Install and start
 
@@ -13,18 +12,6 @@ npm install
 npm start
 ```
 
-## Use Tiddly
-
-Choose the owl or hedgehog as your pet.
-
-- Single-click the pet to open the compact opaque panel.
-- Drag the pet to reposition it.
-- Right-click the pet to close it.
-- Use the menu-bar item to Show, Pause or Resume, or Quit Tiddly.
-
-The panel shows a four-cell metrics table above the Ballmer curve. Select **Pour Me Wine** to advance the session along the curve, or **Pour Me Water** to step it back by one sip.
-
-Tiddly stores its state locally in Electron’s `userData` directory.
 
 ## Connect Codex or Claude Code
 
@@ -46,5 +33,8 @@ npm run test:desktop
 npm run make
 npm run make:forge
 ```
+========
+
+For the architecture and development workflow, see [internal documentation](docs/INTERNALS.md). Verified and pending platform behavior is tracked in [Tiddly capabilities](docs/CAPABILITIES.md).
 
 `npm run make` creates `out/make/zip/darwin/arm64/Tiddly-darwin-arm64-0.1.0.zip`. The package is ad-hoc signed for local use, not notarized for distribution.
