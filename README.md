@@ -3,6 +3,8 @@
 Tiddly is a local desktop pet for macOS that helps you get in the flow  🍾 🥂 🍷 ✨ 
 <img width="195" height="164" alt="Screenshot 2026-09-14 at 1 26 07 AM" src="https://github.com/user-attachments/assets/01e47d55-6c40-4760-8436-ca85ba8b9397" />
 
+Visit the [Tiddly website](https://ilovehhhyn.github.io/tiddly/).
+
 ## Install and start
 
 Tiddly currently targets Apple-silicon macOS. Prereqs: [Node.js](https://nodejs.org/) and Apple Command Line Tools (`xcode-select --install`).

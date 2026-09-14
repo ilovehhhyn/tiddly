@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tiddly is the developer's little desktop friend for finding flow, pacing yourself, and remembering water breaks.">
+  <meta name="theme-color" content="#fff7e8">
+  <title>Tiddly — your tiny coding companion</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the comic</a>
+  <header class="site-header">
+    <a class="wordmark" href="#top" aria-label="Tiddly home"><span>tiddly!</span><i aria-hidden="true"></i></a>
+    <nav aria-label="Main navigation">
+      <a href="#how">How it works</a>
+      <a href="#play">Meet your pet</a>
+      <a class="nav-button" href="https://github.com/ilovehhhyn/tiddly">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="burst burst-one" aria-hidden="true">tiny pal!</div>
+      <div class="hero-copy">
+        <p class="eyebrow">A desktop companion for developers</p>
+        <h1>Your little friend<br>for getting <em>in the flow.</em></h1>
+        <p class="lede">Tiddly keeps you company while you code, tracks your momentum on the Ballmer curve, and gives you a gentle nudge to drink water and pace yourself.</p>
+        <div class="hero-actions">
+          <a class="comic-button primary" href="#install">Get Tiddly <span aria-hidden="true">→</span></a>
+          <a class="comic-button secondary" href="#play">Meet the pets</a>
+        </div>
+        <p class="platform"><span aria-hidden="true">●</span> Made for Apple-silicon macOS</p>
+      </div>
+
+      <div class="hero-comic" aria-label="Hedgehog and owl coding companions">
+        <div class="speed-lines" aria-hidden="true"></div>
+        <div class="speech speech-owl">ready to<br><strong>lock in?</strong></div>
+        <div class="speech speech-hedgehog">but first...<br><strong>water!</strong></div>
+        <div class="sprite sprite-owl owl-idle" role="img" aria-label="Hand-drawn owl"></div>
+        <div class="sprite sprite-hedgehog hedgehog-water" role="img" aria-label="Hand-drawn hedgehog holding water"></div>
+        <span class="sfx sfx-pop" aria-hidden="true">POP!</span>
+        <span class="star star-one" aria-hidden="true">✦</span>
+        <span class="star star-two" aria-hidden="true">✦</span>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true">
+      <div>CODE <b>✦</b> SIP <b>✦</b> FLOW <b>✦</b> REST <b>✦</b> CODE <b>✦</b> SIP <b>✦</b> FLOW <b>✦</b> REST <b>✦</b></div>
+    </div>
+
+    <section class="story" id="how">
+      <header class="section-heading">
+        <span class="issue">Issue #01</span>
+        <div><p>The origin story</p><h2>A tiny sidekick for<br>your biggest coding days.</h2></div>
+      </header>
+
+      <div class="comic-grid">
+        <article class="comic-panel panel-pick">
+          <span class="panel-number">01</span>
+          <div class="panel-caption">Choose your fighter</div>
+          <div class="duo" aria-hidden="true">
+            <div class="sprite owl-idle"></div>
+            <div class="sprite hedgehog-rest"></div>
+          </div>
+          <h3>Pick your little friend.</h3>
+          <p>Owl or hedgehog? They live on your desktop, stay out of the way, and show up when you need them.</p>
+        </article>
+
+        <article class="comic-panel panel-flow">
+          <span class="panel-number">02</span>
+          <div class="panel-caption">Find the sweet spot</div>
+          <div class="mini-curve" aria-label="A playful rising Ballmer curve">
+            <span class="curve-label">flow!</span><i></i><b></b>
+          </div>
+          <h3>Watch your flow grow.</h3>
+          <p>Tiddly turns focused coding time into a playful progress curve. A little momentum feels good. Keep going.</p>
+        </article>
+
+        <article class="comic-panel panel-pace">
+          <span class="panel-number">03</span>
+          <div class="panel-caption">Remember you're human</div>
+          <div class="sprite owl-water" aria-hidden="true"></div>
+          <div class="speech tiny-speech">sip<br>sip!</div>
+          <h3>Pause. Hydrate. Reset.</h3>
+          <p>Water steps the curve back. Tiddly keeps the joke gentle and reminds you that pacing yourself is part of good work.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="playground" id="play">
+      <div class="play-copy">
+        <p class="eyebrow">Try the tiny ritual</p>
+        <h2>Pour one out<br>for the next idea.</h2>
+        <p>Tap a bottle. Watch your companion react. This little demo uses the same hand-drawn frames as the desktop app.</p>
+        <div class="pet-switch" role="group" aria-label="Choose a demo pet">
+          <button class="active" type="button" data-pet="hedgehog">Hedgehog</button>
+          <button type="button" data-pet="owl">Owl</button>
+        </div>
+      </div>
+
+      <div class="demo-shell">
+        <span class="tape tape-left" aria-hidden="true"></span>
+        <span class="tape tape-right" aria-hidden="true"></span>
+        <div class="demo-status"><span>Ballmer flow</span><strong><output id="flow-output">26</output>%</strong></div>
+        <div class="demo-track"><i style="width:26%"></i></div>
+        <div class="demo-stage">
+          <div class="demo-pet sprite hedgehog-rest" role="img" aria-label="Hedgehog companion"></div>
+          <div class="drink-animation" aria-hidden="true"><i></i></div>
+          <div class="demo-bubble">What are we building?</div>
+        </div>
+        <div class="demo-actions">
+          <button class="pour-button wine-pour" type="button"><span class="button-art wine-bottle" aria-hidden="true"></span><strong>Pour me wine</strong></button>
+          <button class="pour-button water-pour" type="button"><span class="button-art water-jug" aria-hidden="true"></span><strong>Pour me water</strong></button>
+        </div>
+        <p class="demo-note" aria-live="polite">A tiny bit of momentum.</p>
+      </div>
+    </section>
+
+    <section class="install" id="install">
+      <div class="install-art" aria-hidden="true">
+        <div class="sprite owl-wine"></div>
+        <span class="pow">CHEERS!</span>
+      </div>
+      <div class="install-copy">
+        <p class="eyebrow">Ready when you are</p>
+        <h2>Bring a little<br>Tiddly to your desktop.</h2>
+        <p>Free, local, and open source. Clone the repo, install, and meet your new coding companion.</p>
+        <div class="terminal" aria-label="Installation commands">
+          <button class="copy-command" type="button" aria-label="Copy installation commands">copy</button>
+          <code><span>$</span> git clone https://github.com/ilovehhhyn/tiddly.git<br><span>$</span> cd tiddly && npm install<br><span>$</span> npm start</code>
+        </div>
+        <a class="comic-button primary" href="https://github.com/ilovehhhyn/tiddly">View on GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="wordmark" href="#top"><span>tiddly!</span></a>
+    <p>The developer's little friend.</p>
+    <a href="https://github.com/ilovehhhyn/tiddly">Open source on GitHub ↗</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
