@@ -5,6 +5,8 @@
   "description": "Tiddly, a hand-drawn desktop companion with a playful Ballmer peak.",
   "main": "dist/main/app.js",
   "scripts": {
+    "postinstall": "node scripts/configure-hooks.mjs",
+    "setup:hooks": "node scripts/configure-hooks.mjs",
     "build:native": "mkdir -p dist/native && swiftc native/macos/tiddly-frontmost.swift -o dist/native/tiddly-frontmost",
     "build": "npm run build:native && tsc && vite build",
     "start": "npm run build && electron-forge start",

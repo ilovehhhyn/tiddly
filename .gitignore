@@ -3,3 +3,5 @@ dist/
 out/
 .DS_Store
 *.log
+.codex/hooks.json
+.claude/settings.local.json

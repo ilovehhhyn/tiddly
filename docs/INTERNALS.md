@@ -16,7 +16,7 @@ This document is the engineering map for Tiddly. The app is intentionally small:
 
 A direct `$ballmer` invocation in Codex or `/ballmer` invocation in Claude triggers the pet's wine animation. Clicking **Pour Me Wine** also arms one recently seen agent task for ten minutes; the next prompt from that exact task receives context telling it to load the installed Ballmer skill. Arming is rejected when zero or multiple recent tasks make the destination ambiguous.
 
-The hook configuration is repository-scoped in `.codex/hooks.json` and `.claude/settings.local.json`. Both files use an absolute command path, so a clone in another directory must update that path. Codex also requires the user to review and trust the hook in a new task.
+The hook configuration is repository-scoped in `.codex/hooks.json` and `.claude/settings.local.json`. `npm install` runs `scripts/configure-hooks.mjs`, which generates both ignored files with the current Node executable and checkout path. `npm run setup:hooks` regenerates them after the repository moves. Codex requires the user to review and trust the generated hook in a new task.
 
 ## Progression rules
 

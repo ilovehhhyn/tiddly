@@ -16,7 +16,7 @@ mv "$app_dir/Contents/MacOS/Electron" "$app_dir/Contents/MacOS/Tiddly"
 plutil -replace CFBundleDisplayName -string Tiddly "$app_dir/Contents/Info.plist"
 plutil -replace CFBundleName -string Tiddly "$app_dir/Contents/Info.plist"
 plutil -replace CFBundleExecutable -string Tiddly "$app_dir/Contents/Info.plist"
-plutil -replace CFBundleIdentifier -string biz.helenhui.tiddly "$app_dir/Contents/Info.plist"
+plutil -replace CFBundleIdentifier -string app.tiddly.desktop "$app_dir/Contents/Info.plist"
 plutil -replace CFBundleShortVersionString -string 0.1.0 "$app_dir/Contents/Info.plist"
 plutil -replace CFBundleVersion -string 0.1.0 "$app_dir/Contents/Info.plist"
 

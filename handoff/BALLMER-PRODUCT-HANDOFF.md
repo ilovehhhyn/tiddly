@@ -484,7 +484,7 @@ Observe verified application identities rather than hard-coded process display s
 
 ### 14.1 Existing skill is the content owner
 
-The authored skill is at [../ballmer/SKILL.md](../ballmer/SKILL.md), with [source notes](../ballmer/references/sources.md) and [Codex UI metadata](../ballmer/agents/openai.yaml). The installed copy at handoff time is `/Users/helenhui/.codex/skills/ballmer/SKILL.md`. Use repository/package-relative paths in the app; do not hard-code this user's home directory into distributed code.
+The authored skill is at [../ballmer/SKILL.md](../ballmer/SKILL.md), with [source notes](../ballmer/references/sources.md) and [Codex UI metadata](../ballmer/agents/openai.yaml). A user may install it under their own Codex skills directory. Use repository/package-relative paths in the app; do not hard-code a user's home directory into distributed code.
 
 Reuse the full skill and its references. Do not replace it with a generic sentence such as “write better code.” It includes JAX research discipline, actual model routing for cheaper subagents when supported, no new catch scaffolding, mathematical comments, measured optimization, three-failure reassessment, and concise updates.
 
