@@ -2,27 +2,16 @@
   "name": "ballmer-desktop-pet",
   "productName": "Tiddly",
   "version": "0.1.0",
-  "description": "Tiddly, a hand-drawn desktop companion with a playful Ballmer peak.",
-  "main": "dist/main/app.js",
+  "description": "Tiddly, a hand-drawn native macOS desktop companion with a playful Ballmer peak.",
+  "private": true,
   "scripts": {
     "postinstall": "node scripts/configure-hooks.mjs",
     "setup:hooks": "node scripts/configure-hooks.mjs",
-    "build:native": "mkdir -p dist/native && swiftc native/macos/tiddly-frontmost.swift -o dist/native/tiddly-frontmost",
-    "build": "npm run build:native && tsc && vite build",
-    "start": "npm run build && electron-forge start",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run --config vitest.config.mjs",
-    "test:desktop": "npm run build && node scripts/desktop-smoke.mjs",
-    "make:forge": "npm run build && electron-forge make",
-    "make": "npm run build && sh scripts/package-macos.sh"
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "7.11.2",
-    "@electron-forge/maker-zip": "7.11.2",
-    "@types/node": "24.10.13",
-    "electron": "44.3.0",
-    "typescript": "7.0.2",
-    "vite": "8.3.0",
-    "vitest": "5.0.0"
+    "build": "sh scripts/build-app.sh",
+    "start": "npm run build && open dist/Tiddly.app",
+    "dev": "npm run build && dist/Tiddly.app/Contents/MacOS/Tiddly",
+    "stop": "pkill -x Tiddly && echo 'Tiddly stopped.' || echo 'Tiddly is not running.'",
+    "test": "swift test",
+    "make": "npm run build && mkdir -p out/make && ditto -c -k --sequesterRsrc --keepParent dist/Tiddly.app out/make/Tiddly-darwin-arm64-0.1.0.zip && echo Created out/make/Tiddly-darwin-arm64-0.1.0.zip"
   }
 }

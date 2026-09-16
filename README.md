@@ -7,7 +7,7 @@ Visit the [Tiddly website](https://ilovehhhyn.github.io/tiddly/).
 
 ## Install and start
 
-Tiddly currently targets Apple-silicon macOS. Prereqs: [Node.js](https://nodejs.org/) and Apple Command Line Tools (`xcode-select --install`).
+Tiddly is a native Swift app for Apple-silicon macOS 13 or newer. Prereqs: [Node.js](https://nodejs.org/) for the agent hooks and Apple Command Line Tools (`xcode-select --install`) for the Swift compiler.
 
 ```sh
 git clone https://github.com/ilovehhhyn/tiddly.git
@@ -16,10 +16,13 @@ npm install
 npm start
 ```
 
-if you closed tiddly, relaunch it by navigating to the `tiddly` repo and running 
+`npm start` builds `dist/Tiddly.app` and opens it. Tiddly runs on its own from that point: you can close the terminal, and it keeps going until you quit it from the wine-glass menu bar icon or with:
+
 ```sh
-npm start
+npm run stop
 ```
+
+if you closed tiddly, relaunch it by navigating to the `tiddly` repo and running `npm start` again. To run it attached to the terminal with log output, use `npm run dev`.
 
 ## Connect Codex or Claude Code
 
@@ -30,18 +33,15 @@ For Codex, start a new task in the repository after installation, open `/hooks`,
 ## Verify
 
 ```sh
-npm run typecheck
 npm test
-npm run test:desktop
 ```
 
 ## Package
 
 ```sh
 npm run make
-npm run make:forge
 ```
 
-`npm run make` creates `out/make/zip/darwin/arm64/Tiddly-darwin-arm64-0.1.0.zip`. The package is ad-hoc signed for local use, not notarized for distribution.
+`npm run make` writes `out/make/Tiddly-darwin-arm64-0.1.0.zip`. The app is ad-hoc signed for local use, not notarized for distribution.
 
 For the architecture and development workflow, see [internal documentation](docs/INTERNALS.md). Verified and pending platform behavior is tracked in [Tiddly capabilities](docs/CAPABILITIES.md).
