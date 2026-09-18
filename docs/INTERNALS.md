@@ -37,6 +37,12 @@ max(0, counted time / 15 minutes + wine count - water count)
 
 Eight sip-equivalents place the marker at the `0.13` Ballmer reference. The displayed curve is logarithmic and expands its horizontal domain as the marker advances.
 
+## Water reminders
+
+`WaterReminder` in `TiddlyCore` grants one nudge per wall-clock hour from 10:00 through 01:00. It keys on the year/month/day/hour the check falls in and fires the first time it sees a new reminder slot, so the hour Tiddly launches in is already spent (a 10:37 launch waits for 11:00) and a machine that sleeps through several slots wakes to a single catch-up rather than a backlog. Nothing is persisted: a quit app stops reminding, which is the behavior we want.
+
+The existing one-second tick drives the check, so there is no second timer. `AppDelegate.remindWater()` picks the surface: a pet on screen speaks through the usual bubble, and a hidden pet puts `time for water!!` beside the menu bar wine glass, where it stays until the menu is opened or the pet is shown again.
+
 ## Artwork and UI
 
 Helen's PNG sheets in `assets/source/` are the canonical artwork. `Artwork.swift` crops those pixels; do not trace, redraw, smooth, or generate replacements for the pets or drink frames. The bundled Gaegu font is licensed under the included OFL text. See `assets/README.md` for the asset contract.

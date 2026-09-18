@@ -1,8 +1,9 @@
 import AppKit
 import TiddlyCore
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   static let codexBundleId = "com.openai.codex"
+  static let waterMessage = "time for water!!"
   private var state = PetState.initial()
   private var store: StateStore!
   private var clock: SessionClock!
@@ -14,6 +15,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private var lockDescriptor: Int32 = -1
   private var signalSources: [DispatchSourceSignal] = []
   private var lastPanelRefresh: (minutes: Int, next: Int, status: String, pending: Bool)?
+  private var water: WaterReminder!
+  private var waterNudgeVisible = false
 
   private var supportDirectory: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Tiddly")
@@ -25,6 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     store = StateStore(directory: supportDirectory)
     state = loadState()
     clock = SessionClock(countedMs: state.countedMs, paused: state.paused)
+    water = WaterReminder(startedAt: Date())
     bridge = BridgeServer(model: BridgeModel())
     bridge.model.onSkillInvoked = { [weak self] in self?.skillInvoked() }
     bridge.onStatus = { [weak self] in self?.refresh() }
@@ -86,6 +90,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       pet.animate(.wine, message: state.encouraged && !prior.encouraged ? "Half an hour. Nice work. Tiny cheers." : "")
     }
     if state.celebrated && !prior.celebrated { pet.showBubble("Peak little genius. Onward?") }
+    if water.isDue(at: Date()) { remindWater() }
     ticks += 1
     if ticks % 10 == 0 { save() }
   }
@@ -101,6 +106,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     pet.animate(.water, message: "")
     state = Progression.drinkWater(state)
     save(); refresh(force: true); pet.pulse(.retreated)
+  }
+
+  /// Hourly nudge. The pet speaks when it is on screen; otherwise the menu bar carries the message until clicked.
+  private func remindWater() {
+    if pet.window.isVisible { pet.showBubble(AppDelegate.waterMessage) } else { showWaterNudge() }
+  }
+
+  private func showWaterNudge() {
+    guard !waterNudgeVisible, let button = statusItem.button else { return }
+    waterNudgeVisible = true
+    statusItem.length = NSStatusItem.variableLength
+    button.imagePosition = .imageLeading
+    button.title = " \(AppDelegate.waterMessage) "
+  }
+
+  private func clearWaterNudge() {
+    guard waterNudgeVisible, let button = statusItem.button else { return }
+    waterNudgeVisible = false
+    button.title = ""
+    button.imagePosition = .imageOnly
+    statusItem.length = NSStatusItem.squareLength
   }
 
   private func togglePause() {
@@ -157,10 +183,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     menu.addItem(withTitle: state.paused ? "Resume" : "Pause", action: #selector(menuTogglePause), keyEquivalent: "").target = self
     menu.addItem(.separator())
     menu.addItem(withTitle: "Quit", action: #selector(quit), keyEquivalent: "q").target = self
+    menu.delegate = self
     statusItem.menu = menu
   }
 
-  @objc private func showPet() { pet.showPet() }
+  @objc private func showPet() { clearWaterNudge(); pet.showPet() }
+  func menuWillOpen(_ menu: NSMenu) { clearWaterNudge() }
   @objc private func menuTogglePause() { togglePause() }
   @objc private func quit() { NSApp.terminate(nil) }
 
