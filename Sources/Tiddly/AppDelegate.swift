@@ -1,9 +1,11 @@
 import AppKit
 import TiddlyCore
+import UserNotifications
 
-final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate, UNUserNotificationCenterDelegate {
   static let codexBundleId = "com.openai.codex"
   static let waterMessage = "time for water!!"
+  static let waterLabelSeconds: TimeInterval = 30
   private var state = PetState.initial()
   private var store: StateStore!
   private var clock: SessionClock!
@@ -16,7 +18,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
   private var signalSources: [DispatchSourceSignal] = []
   private var lastPanelRefresh: (minutes: Int, next: Int, status: String, pending: Bool)?
   private var water: WaterReminder!
-  private var waterNudgeVisible = false
+  private let waterNudge = WaterNudge()
+  private var waterLabelTimer: Timer?
+  private var statusFallbackTitle = ""
 
   private var supportDirectory: URL {
     FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("Tiddly")
@@ -45,6 +49,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     createStatusItem()
     observeSystem()
     installSignalHandlers()
+    requestNotificationPermission()
     if let directory = ProcessInfo.processInfo.environment["TIDDLY_SNAPSHOT_DIR"] { writeSnapshots(to: directory); return }
     let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in self?.tickOnce() }
     timer.tolerance = 0.2
@@ -110,22 +115,73 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
   /// Hourly nudge. The pet speaks when it is on screen; otherwise the menu bar carries the message until clicked.
   private func remindWater() {
-    if pet.window.isVisible { pet.showBubble(AppDelegate.waterMessage) } else { showWaterNudge() }
+    if pet.window.isVisible { pet.showBubble(AppDelegate.waterMessage); return }
+    showWaterNudge()
+    notifyWater()
   }
 
+  /// Shows the message beside a water-drop icon, then collapses to the drop alone after
+  /// `waterLabelSeconds`. A wide status item can be dropped from a crowded menu bar, so the
+  /// width is always temporary — the drop is what waits to be read.
   private func showWaterNudge() {
-    guard !waterNudgeVisible, let button = statusItem.button else { return }
-    waterNudgeVisible = true
-    statusItem.length = NSStatusItem.variableLength
+    guard waterNudge.remind(), let button = statusItem.button else { return }
+    button.image = statusImage("drop.fill") ?? button.image
     button.imagePosition = .imageLeading
     button.title = " \(AppDelegate.waterMessage) "
+    statusItem.length = NSStatusItem.variableLength
+    waterLabelTimer?.invalidate()
+    waterLabelTimer = Timer.scheduledTimer(withTimeInterval: AppDelegate.waterLabelSeconds, repeats: false) { [weak self] _ in
+      self?.collapseWaterNudge()
+    }
+  }
+
+  /// The menu bar cannot be relied on to stay visible — a crowded bar parks the item behind the
+  /// notch — so a closed pet is reminded by a real notification as well.
+  private func requestNotificationPermission() {
+    let center = UNUserNotificationCenter.current()
+    center.delegate = self
+    center.requestAuthorization(options: [.alert]) { granted, error in
+      if let error { NSLog("Tiddly: notification permission failed: %@", String(describing: error)) }
+      else if !granted { NSLog("Tiddly: notifications not allowed; the menu bar is the only fallback") }
+    }
+  }
+
+  private func notifyWater() {
+    let content = UNMutableNotificationContent()
+    content.title = "Tiddly"
+    content.body = AppDelegate.waterMessage
+    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+    UNUserNotificationCenter.current().add(request) { error in
+      if let error { NSLog("Tiddly: could not post water reminder: %@", String(describing: error)) }
+    }
+  }
+
+  func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
+                              withCompletionHandler handler: @escaping (UNNotificationPresentationOptions) -> Void) {
+    handler([.banner, .list])
+  }
+
+  /// Tapping the banner brings the pet back, which is the one thing you would want from it.
+  func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
+                              withCompletionHandler handler: @escaping () -> Void) {
+    DispatchQueue.main.async { self.clearWaterNudge(); self.pet.showPet() }
+    handler()
+  }
+
+  private func collapseWaterNudge() {
+    guard waterNudge.collapse(), let button = statusItem.button else { return }
+    waterLabelTimer?.invalidate(); waterLabelTimer = nil
+    button.title = statusFallbackTitle
+    button.imagePosition = statusFallbackTitle.isEmpty ? .imageOnly : .noImage
+    statusItem.length = NSStatusItem.squareLength
   }
 
   private func clearWaterNudge() {
-    guard waterNudgeVisible, let button = statusItem.button else { return }
-    waterNudgeVisible = false
-    button.title = ""
-    button.imagePosition = .imageOnly
+    guard waterNudge.dismiss(), let button = statusItem.button else { return }
+    waterLabelTimer?.invalidate(); waterLabelTimer = nil
+    button.image = statusImage("wineglass") ?? statusImage("circle.fill") ?? button.image
+    button.title = statusFallbackTitle
+    button.imagePosition = statusFallbackTitle.isEmpty ? .imageOnly : .noImage
     statusItem.length = NSStatusItem.squareLength
   }
 
@@ -170,11 +226,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
   private func createStatusItem() {
     statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    if let image = NSImage(systemSymbolName: "wineglass", accessibilityDescription: "Tiddly") ?? NSImage(systemSymbolName: "circle.fill", accessibilityDescription: "Tiddly") {
-      image.isTemplate = true
+    // macOS decides where a status item lands, and a full menu bar can park it behind the notch.
+    // A stable autosave name is the one lever an app has: once the item is command-dragged to a
+    // visible slot, that position is remembered across launches.
+    statusItem.autosaveName = "TiddlyStatusItem"
+    statusItem.isVisible = true
+    if let image = statusImage("wineglass") ?? statusImage("circle.fill") {
       statusItem.button?.image = image
-    } else { statusItem.button?.title = "T" }
+    } else { statusFallbackTitle = "T"; statusItem.button?.title = statusFallbackTitle }
     rebuildStatusMenu()
+  }
+
+  private func statusImage(_ symbol: String) -> NSImage? {
+    guard let image = NSImage(systemSymbolName: symbol, accessibilityDescription: "Tiddly") else { return nil }
+    image.isTemplate = true
+    return image
   }
 
   private func rebuildStatusMenu() {

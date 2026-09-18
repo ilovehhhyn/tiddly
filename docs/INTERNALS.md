@@ -41,7 +41,11 @@ Eight sip-equivalents place the marker at the `0.13` Ballmer reference. The disp
 
 `WaterReminder` in `TiddlyCore` grants one nudge per wall-clock hour from 10:00 through 01:00. It keys on the year/month/day/hour the check falls in and fires the first time it sees a new reminder slot, so the hour Tiddly launches in is already spent (a 10:37 launch waits for 11:00) and a machine that sleeps through several slots wakes to a single catch-up rather than a backlog. Nothing is persisted: a quit app stops reminding, which is the behavior we want.
 
-The existing one-second tick drives the check, so there is no second timer. `AppDelegate.remindWater()` picks the surface: a pet on screen speaks through the usual bubble, and a hidden pet puts `time for water!!` beside the menu bar wine glass, where it stays until the menu is opened or the pet is shown again.
+The existing one-second tick drives the check, so there is no second timer. `AppDelegate.remindWater()` picks the surface: a pet on screen speaks through the usual bubble, and a hidden pet gets a notification plus a menu bar signal.
+
+The menu bar cannot be trusted to stay visible. macOS owns status item placement, and on a notched Mac with a full bar it will park an item behind the notch, where it cannot be seen or clicked — observed here at x=725 on a 1470pt screen. An app has no API for priority or position; `autosaveName` only preserves a slot the user picked by command-dragging. That is why a closed pet is reminded by `UNUserNotificationCenter` as well, and why the menu bar label is never load-bearing.
+
+`WaterNudge` in `TiddlyCore` holds the three menu bar stages. A reminder swaps the wine glass for a water drop and shows the message; after `waterLabelSeconds` the label collapses and the item returns to square width, leaving the drop to wait; opening the menu or showing the pet restores the wine glass. The width is deliberately temporary — an item that stays wide is an item that can be hidden with no way to click it back, which is exactly how an early version of this stranded the icon behind the notch for twelve hours.
 
 ## Artwork and UI
 
